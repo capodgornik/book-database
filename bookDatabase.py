@@ -10,7 +10,7 @@ and maintained with Python.
 #import pandas as pd
 import tkinter as tk
 from tkinter import *
-from bookDatabaseSQL import *
+#from bookDatabaseSQL import *
 
 def loadImageHelper(filename):
     
@@ -54,7 +54,7 @@ def assistantHelper(name):
 def setAssistant(frame, name):
     
     assistant = assistantHelper(name)
-    loadFrame(frame, searchPage(assistant))
+    loadFrame(frame, helpPage(assistant))
 
 def chooseCat():
 
@@ -119,53 +119,70 @@ def chooseCat():
           
     return chooseCatFrame
 
-def searchPage(assistant):
+def helpPage(assistant):
     
-    searchFrame = Frame(root)
-    searchFrame["bg"] = "skyblue"
+    helpFrame = Frame(root)
+    helpFrame["bg"] = "skyblue"
     
-    searchFrame.rowconfigure(0, weight=1)
-    searchFrame.rowconfigure(1, weight=1)
-    searchFrame.rowconfigure(2, weight=1)
-    searchFrame.rowconfigure(3, weight=1)
-    searchFrame.rowconfigure(4, weight=1)
-    searchFrame.rowconfigure(5, weight=1)
-    searchFrame.columnconfigure(0, weight=1)
-    searchFrame.columnconfigure(1, weight=1)
-    searchFrame.columnconfigure(2, weight=1)
+    helpFrame.rowconfigure(0, weight=1)
+    helpFrame.rowconfigure(1, weight=1)
+    helpFrame.rowconfigure(2, weight=1)
+    helpFrame.rowconfigure(3, weight=1)
+    helpFrame.rowconfigure(4, weight=1)
+    helpFrame.rowconfigure(5, weight=1)
+    helpFrame.columnconfigure(0, weight=1)
+    helpFrame.columnconfigure(1, weight=1)
+    helpFrame.columnconfigure(2, weight=1)
     
     # images of books at top of interface
     for i in range(3):
-        Label(searchFrame, 
+        Label(helpFrame, 
               bg= 'skyblue', 
               image = miscImages[0]).grid(row=0, column=i)#, columnspan=3) 
-    '''          
-    Label(searchFrame, 
-          bg= 'skyblue', 
-          image = miscImages[0]).grid(row=0, column=1)#, columnspan=3) 
-    Label(searchFrame, 
-          bg= 'skyblue', 
-          image = miscImages[0]).grid(row=0, column=2)# columnspan=3)           
-    '''
     
-    # search, add recommendation, and home buttons
-    Button(searchFrame,
+    # help, add recommendation, and home buttons
+    Button(helpFrame,
            text = "Search for a Book",
-           font= ('Comic Sans MS', 10, 'bold italic')).grid(row=1, column=0)
-    Button(searchFrame,
+           font= ('Comic Sans MS', 10, 'bold italic'),
+           command= lambda: searchButton(helpFrame, assistant)).grid(row=1, column=0)
+    Button(helpFrame,
            text = "Make a Recommendation",
            font= ('Comic Sans MS', 10, 'bold italic')).grid(row=2, column=0)
+    Button(helpFrame,
+           text = "Home",
+           command = lambda: loadFrame(helpFrame, chooseCat()),
+           font= ('Comic Sans MS', 10, 'bold italic')).grid(row=3, column=0)
+
+    # cat assistant info
+    Label(helpFrame,
+          bg = "skyblue",
+          image = dialogueImages[assistant]).grid(row=1, column = 1, sticky="SE", rowspan=2)  
+    Label(helpFrame,
+          image = catAvatars[assistant]).grid(row=3, column = 1, sticky="NE")    
+    
+    return helpFrame
+
+def searchButton(frame, assistant):
+ 
+    loadFrame(frame, searchPage(assistant))
+
+def searchPage(assistant):
+
+    searchFrame = Frame(root)
+    searchFrame["bg"] = "skyblue"
+    
     Button(searchFrame,
            text = "Home",
            command = lambda: loadFrame(searchFrame, chooseCat()),
            font= ('Comic Sans MS', 10, 'bold italic')).grid(row=3, column=0)
-
-    # cat assistant info
+    
+    Label(searchFrame, 
+          bg= 'skyblue', 
+          text= "Your assistant is:", 
+          font= ('Comic Sans MS', 25, 'bold italic')).grid(row=0, column=0, columnspan=3, sticky="S")
+          
     Label(searchFrame,
-          bg = "skyblue",
-          image = dialogueImages[assistant]).grid(row=1, column = 1, sticky="SE", rowspan=2)  
-    Label(searchFrame,
-          image = catAvatars[assistant]).grid(row=3, column = 1, sticky="NE")    
+          image = catAvatars[assistant]).grid(row=3, column = 1, sticky="NE")       
     
     return searchFrame
 
