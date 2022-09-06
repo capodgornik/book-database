@@ -171,6 +171,13 @@ def searchPage(assistant):
     searchFrame = Frame(root)
     searchFrame["bg"] = "skyblue"
     
+    options = ["TBR", "Read"]
+    variable = StringVar(root)
+    variable.set("Choose an option")
+    
+    w = OptionMenu(root, variable, *options)
+    w.pack()
+    
     Button(searchFrame,
            text = "Home",
            command = lambda: loadFrame(searchFrame, chooseCat()),
